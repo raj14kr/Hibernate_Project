@@ -1,0 +1,40 @@
+package org.jsp.manytomanyuni;
+
+import java.util.List;
+import java.util.Scanner;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
+public class FilterStudentsByPercentageRange8 {
+    public static void main(String[] args) {
+
+        EntityManagerFactory emf =Persistence.createEntityManagerFactory("A17");
+
+        EntityManager em = emf.createEntityManager();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Minimum Percentage:");
+        double min = sc.nextDouble();
+
+        System.out.println("Enter Maximum Percentage:");
+        double max = sc.nextDouble();
+
+        Query q = em.createQuery("SELECT s FROM Student s WHERE s.marks BETWEEN ?1 AND ?2");
+
+        q.setParameter(1, min);
+        q.setParameter(2, max);
+
+        List<Student> list = q.getResultList();
+
+        if (list.size() > 0) {
+            for (Student s : list) {
+                System.out.println(s);
+            }
+        } else {
+            System.out.println("No students found in this range");
+        }
+
+    }
+}
